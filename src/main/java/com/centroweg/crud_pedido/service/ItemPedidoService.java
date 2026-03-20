@@ -10,6 +10,8 @@ import com.centroweg.crud_pedido.repository.PedidoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ItemPedidoService {
@@ -28,5 +30,35 @@ public class ItemPedidoService {
 
         return itemPedidoMapper.toDto(itemPedidoRepository.save(itemPedido));
 
+    }
+
+    public List<ItemPedidoResponseDto> findAll(){
+        List<ItemPedido> itens = itemPedidoRepository.findAll();
+        return itens.stream()
+                .map(itemPedidoMapper::toDto)
+                .toList();
+    }
+
+    public ItemPedidoResponseDto findById(Long id){
+        ItemPedido itemPedido = itemPedidoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Nenhum item com esse id encontrado"));
+
+        return itemPedidoMapper.toDto(itemPedido);
+    }
+
+    public ItemPedidoResponseDto update(Long id, ItemPedidoRequestDto itemPedidoRequestDto){
+        ItemPedido itemPedido = itemPedidoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Nenhum item com esse id encontrado"));
+
+        itemPedido.setNomeProduto(itemPedidoRequestDto.nomeProduto());
+        itemPedido.setQuantidade(itemPedidoRequestDto.quantidade());
+        itemPedido.setPrecoUnitario(itemPedidoRequestDto.precoUnitario());
+        itemPedido.getPedido().setId(itemPedidoRequestDto.idPedido());
+
+        return itemPedidoMapper.toDto(itemPedidoRepository.save(itemPedido));
+    }
+
+    public void deleteById(Long id){
+        itemPedidoRepository.deleteById(id);
     }
 }
