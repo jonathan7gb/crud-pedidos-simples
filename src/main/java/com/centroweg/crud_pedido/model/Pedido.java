@@ -6,8 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
+@Table(name = "pedido")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +21,9 @@ public class Pedido {
 
     @Column(name = "data_pedido")
     private LocalDateTime dataPedido;
+
+    @OneToMany(mappedBy = "pedido")
+    private List<ItemPedido> itens;
 
     public Pedido(LocalDateTime dataPedido) {
         this.dataPedido = dataPedido;
