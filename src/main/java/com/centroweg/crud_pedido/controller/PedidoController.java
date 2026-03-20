@@ -3,6 +3,7 @@ package com.centroweg.crud_pedido.controller;
 import com.centroweg.crud_pedido.dto.PedidoRequestDto;
 import com.centroweg.crud_pedido.dto.PedidoResponseDTO;
 import com.centroweg.crud_pedido.service.PedidoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -42,7 +43,7 @@ public class PedidoController {
     @PutMapping("/{id}")
     public ResponseEntity<PedidoResponseDTO> update(
             @PathVariable Long id,
-            @RequestBody PedidoRequestDto pedidoRequestDto
+            @Valid @RequestBody PedidoRequestDto pedidoRequestDto
             ){
         return ResponseEntity
                 .ok()
